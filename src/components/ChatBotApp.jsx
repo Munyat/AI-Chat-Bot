@@ -43,17 +43,17 @@ const ChatBotApp = ({
     if (e) e.preventDefault();
 
     if (inputValue.trim() === "") return;
-
-    const newMessage = {
-      type: "prompt",
-      text: inputValue,
-      timestamp: new Date().toLocaleTimeString(),
-    };
+    setShowEmojiPicker((prev) => false);
 
     if (!activeChat) {
       onNewChat(inputValue);
       setInputValue("");
     } else {
+      const newMessage = {
+        type: "prompt",
+        text: inputValue,
+        timestamp: new Date().toLocaleTimeString(),
+      };
       const updatedMessages = [...messages, newMessage];
       setMessages(updatedMessages);
       localStorage.setItem(activeChat, JSON.stringify(updatedMessages));
@@ -106,13 +106,6 @@ const ChatBotApp = ({
     }
   };
 
-  // const handleKeyDown = (e) => {
-  //   if (e.key === "Enter") {
-  //     e.preventDefault();
-  //     sendMessage();
-  //   }
-  // };
-
   const handleSelectChat = (id) => {
     setActiveChat(id);
   };
@@ -140,7 +133,7 @@ const ChatBotApp = ({
           <h2>Chat List</h2>
           <i
             className="bx bx-edit-alt new-chat"
-            onClick={() => onNewChat()}
+            onClick={() => onNewChat("")}
           ></i>
           <i
             className="bx bx-x-circle close-list"
@@ -152,7 +145,9 @@ const ChatBotApp = ({
             <div
               key={chat.id}
               className={`chat-list-item ${chat.id === activeChat ? "active" : ""}`}
-              onClick={() => handleSelectChat(chat.id)}
+              onClick={() => {
+                handleSelectChat(chat.id);
+              }}
             >
               <h4>{chat.displayId}</h4>
               <i

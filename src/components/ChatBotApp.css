@@ -44,6 +44,7 @@
   align-items: center;
   justify-content: space-between;
   box-shadow: 0 0.5rem 0.5rem rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 .chat-list-item.active {
@@ -106,6 +107,9 @@
   flex-direction: column;
   row-gap: 4rem;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #7b8ebc transparent;
+  border-radius: 4px;
 }
 
 .chat::-webkit-scrollbar {
@@ -205,13 +209,16 @@
 }
 
 .scroll {
+  flex-grow: 1;
   overflow-y: auto;
   max-height: 100vh;
   scrollbar-width: thin;
   scrollbar-color: #7b8ebc transparent;
   border-radius: 4px;
 }
-
+.close-list {
+  display: none; /* Show only on small screens */
+}
 @media (max-width: 900px) {
   .chat-app {
     flex-direction: column;
@@ -246,9 +253,12 @@
     cursor: pointer;
     position: absolute;
   }
+  .close-list {
+    display: inline-block; /* Show only on small screens */
+  }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   .chat-list {
     width: 60%;
   }

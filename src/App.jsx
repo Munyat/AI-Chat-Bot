@@ -1,28 +1,40 @@
-import { useState } from "react";
-import ChatBotApp from "./components/ChatBotApp";
+import { useEffect, useState } from "react";
 import ChatBotStart from "./components/ChatBotStart";
+import ChatBotApp from "./components/ChatBotApp";
 import { v4 as uuidv4 } from "uuid";
 
-function App() {
+const App = () => {
   const [isChatting, setIsChatting] = useState(false);
   const [chats, setChats] = useState([]);
-  const [activeChat, setActiveChat] = useState([]);
+  const [activeChat, setActiveChat] = useState(null);
 
-  function handleStartChatting() {
+  useEffect(() => {
+    const storedChats = JSON.parse(localStorage.getItem("chats")) || [];
+    setChats(storedChats);
+
+    if (storedChats.length > 0) {
+      setActiveChat(storedChats[0].id);
+    }
+  }, []);
+
+  const handleStartChat = () => {
     setIsChatting(true);
 
     if (chats.length === 0) {
       createNewChat();
     }
-  }
-  function handleGoBack() {
-    setIsChatting(false);
-  }
+  };
 
-  function createNewChat(initialMessage = "") {
+  const handleGoBack = () => {
+    setIsChatting(false);
+  };
+
+  const createNewChat = (initialMessage = "") => {
     const newChat = {
       id: uuidv4(),
-      displayId: `Chat ${new Date().toLocaleDateString("en-GB")} ${new Date().toLocaleTimeString()}`,
+      displayId: `Chat ${new Date().toLocaleDateString(
+        "en-GB"
+      )} ${new Date().toLocaleTimeString()}`,
       messages: initialMessage
         ? [
             {
@@ -33,10 +45,13 @@ function App() {
           ]
         : [],
     };
+
     const updatedChats = [newChat, ...chats];
     setChats(updatedChats);
+    localStorage.setItem("chats", JSON.stringify(updatedChats));
+    localStorage.setItem(newChat.id, JSON.stringify(newChat.messages));
     setActiveChat(newChat.id);
-  }
+  };
 
   return (
     <div className="container">
@@ -50,10 +65,10 @@ function App() {
           onNewChat={createNewChat}
         />
       ) : (
-        <ChatBotStart onStartChat={handleStartChatting} />
+        <ChatBotStart onStartChat={handleStartChat} />
       )}
     </div>
   );
-}
+};
 
 export default App;
