@@ -4,7 +4,7 @@ function ChatBotStart({ onStartChat }) {
   return (
     <div className="start-page-btn">
       <button className="start-page-btn" onClick={() => onStartChat()}>
-        Chat AI{" "}
+        Start Chat{" "}
       </button>
     </div>
   );
