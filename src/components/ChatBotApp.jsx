@@ -4,6 +4,7 @@ import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 const ChatBotApp = ({
   onGoBack,
   chats,
@@ -69,9 +70,7 @@ const ChatBotApp = ({
       localStorage.setItem("chats", JSON.stringify(updatedChats));
       setIsTyping(true);
 
-      const genAI = new GoogleGenerativeAI(
-        "AIzaSyAJCWeOcLFR41BYJsXPYwV1NSom3LfQXKQ"
-      );
+      const genAI = new GoogleGenerativeAI(apiKey);
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
       const prompt = inputValue;
